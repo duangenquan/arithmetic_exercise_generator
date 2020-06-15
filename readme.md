@@ -8,4 +8,4 @@ The python program generates some arithmetic exercise for kid, supported operato
   * each page has 36 equations.
 
 ## Generated exercise example.
-![Image](example.png)
+![Image](example.PNG)
