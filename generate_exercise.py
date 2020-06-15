@@ -6,11 +6,10 @@ random.seed(datetime.now())
 import argparse
 
 
-def generate_one_page(page_name, first_max, second_max):
+def generate_one_page(page_name, first_max, operators, second_max):
   numbers = 36  # number of equations to generate.
   first_op_range = (0, first_max)  # first operands range in [0, 10]
   second_op_range = (0, second_max)  # second operands range in [0, 100]
-  operators = ['+', '-']  # set which operator to use, supports any  ['+', '-', 'x']
   numbers = numbers // 2 * 2  # Make it even so each line can contain two equations.
   rand_num = numbers * 2
 
@@ -30,9 +29,13 @@ def generate_one_page(page_name, first_max, second_max):
     a = random.randint(*first_op_range)
     b = random.randint(*second_op_range)
     sign = random.choice(operators)
-    if sign == '-':
+    if sign == '-' or sign == '/' :
       if a < b:
         a, b = b, a
+    if sign == '/':
+      if b == 0:
+        b = 1
+      a = (a // b) * b
     if i % 2 == 0:
       x = dx
     else:
@@ -48,10 +51,11 @@ def main():
   parser = argparse.ArgumentParser()
   parser.add_argument('--pages', type=int, default=1)
   parser.add_argument('--first_max', type=int, default=20)
+  parser.add_argument('--operators', type=str, default='+-')
   parser.add_argument('--second_max', type=int, default=20)
   args = parser.parse_args()
   for page in range(args.pages):
-    generate_one_page('numbers{:02d}'.format(page), args.first_max, args.second_max)
+    generate_one_page('numbers{:02d}'.format(page), args.first_max, args.operators, args.second_max)
 
 
 if __name__ == '__main__':
